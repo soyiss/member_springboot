@@ -1,5 +1,6 @@
 package com.example.member.entity;
 
+import com.example.member.dto.MemberDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,5 +25,15 @@ public class MemberEntity {
     private String memberBirth;
     @Column(length = 30)
     private String memberMobile;
+
+    public static MemberEntity toSaveEntity(MemberDTO memberDTO) {
+        MemberEntity memberEntity = new MemberEntity();
+        memberEntity.setMemberEmail(memberDTO.getMemberEmail());
+        memberEntity.setMemberPassword(memberDTO.getMemberPassword());
+        memberEntity.setMemberName(memberDTO.getMemberName());
+        memberEntity.setMemberBirth(memberDTO.getMemberBirth());
+        memberEntity.setMemberMobile(memberDTO.getMemberMobile());
+        return memberEntity;
+    }
 
 }

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="nav" id="nav">
+  <h1>nav영역입니다</h1>
+    
+<!-- session값 꺼낼땐 요런식으로 꺼내면된다.   -->
+    <p th:text="${session.loginiEmail}"></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:replace="component/header :: header"></div>
+<div th:replace="component/nav :: nav"></div>
+<form action="/member/save" method="post">
+    <input type="text" name="memberEmail" placeholder="이메일" id="member-email" onblur="email_check()"> <br>
+    <p id="check-result"></p>
+    <input type="text" name="memberPassword" placeholder="비밀번호"> <br>
+    <input type="text" name="memberName" placeholder="이름"> <br>
+    <input type="date" name="memberBirth"> <br>
+    <input type="text" name="memberMobile" placeholder="전화번호"> <br>
+    <input type="submit" value="회원가입">
+</form>
+<div th:replace="component/footer :: footer"></div>
+
+</body>
+</html>
