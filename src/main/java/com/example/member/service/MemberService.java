@@ -81,4 +81,8 @@ public class MemberService {
 //            return  null;
 //        }
     }
+
+    public void delete(Long id) {
+        memberRepository.deleteById(id);
+    }
 }

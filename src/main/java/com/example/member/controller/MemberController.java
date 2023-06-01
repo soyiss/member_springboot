@@ -81,4 +81,11 @@ public class MemberController {
         return "redirect:/member/";
     }
 
+    // 주소 요청이 delete인 경우 어노테이션을 DeleteMapping을 사용한다
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable Long id) {
+        memberService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
