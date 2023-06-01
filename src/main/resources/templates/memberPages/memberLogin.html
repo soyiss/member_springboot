@@ -3,6 +3,9 @@
 <head>
     <th:block th:replace="component/config :: config"></th:block>
 
+    <!--  axios를 위한 cdn복사 주소    -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 </head>
 <body>
 <div th:replace="component/header :: header"></div>
@@ -11,10 +14,36 @@
     <form action="/member/login" method="post">
         <input type="text" name="memberEmail" placeholder="이메일"> <br>
         <input type="text" name="memberPassword" placeholder="비밀번호"> <br>
-        <input type="submit" value="로그인">
+        <input type="button" value="로그인" onclick="login()">
     </form>
 </div>
 <div th:replace="component/footer :: footer"></div>
 
 </body>
+<script>
+    const login = () => {
+        // querySelector를 이용해서 name이 적용된 값을 가져올때 밑에처럼 씀(주의@@ 안에가 ""(더블쿼터) 밖에가 ''(싱글쿼터)로 묶여있다
+        const email = document.querySelector('input[name="memberEmail"]').value;
+        const password = document.querySelector('input[name="memberPassword"]').value;
+        axios({
+            //주소 보내는 방식
+            method: "post",
+            //  요청주소
+            url: "/member/login/axios",
+            //보내는 데이터
+            data: {
+                //보내는 이름은 DTO필드랑 일치시켜야됨
+                memberEmail: email,
+                memberPassword: password
+            }
+            //성공했을때 then
+        }).then(res => {
+            console.log("res", res);
+            // 실패했을때 catch
+        }).catch(err => {
+            console.log("err", err);
+        });
+
+    }
+</script>
 </html>

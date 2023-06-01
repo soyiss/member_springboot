@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:replace="component/config :: config"></th:block>
+</head>
+<body>
+<div th:replace="component/header :: header"></div>
+<div th:replace="component/nav :: nav"></div>
+<div id="section">
+  <form action="/member/update" method="post">
+    id<br><input type="text" name="id" th:value="${memberDTO.getId}" readonly>
+    email<br><input type="text" name="memberEmail" th:value="${memberDTO.getMemberEmail()}" readonly>
+    pw<br><input type="text" name="memberPassword" th:value="${memberDTO.getMemberPassword()}">
+    name<br><input type="text" name="memberName" th:value="${memberDTO.getMemberName()}">
+    birth<br><input type="date" name="memberBirth" th:value="${memberDTO.getMemberBirth()}">
+    mobile<br><input type="text" name="memberMobile" th:value="${memberDTO.getMemberMobile()}">
+    <input type="submit" value="수정" >
+  </form>
+</div>
+<div th:replace="component/footer :: footer"></div>
+</body>
+</html>

@@ -1,38 +1,82 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <th:block th:replace="component/config :: config"></th:block>
+    <th:block th:replace="component/config :: config"></th:block>
 </head>
 <body>
 <div th:replace="component/header :: header"></div>
 <div th:replace="component/nav :: nav"></div>
 <div id="section">
-  <table>
-    <tr>
-      <th>id</th>
-      <th>email</th>
-      <th>name</th>
-      <th>birth</th>
-      <th>mobile</th>
-      <th>조회</th>
-      <th>삭제</th>
-    </tr>
-    <tr th:each="member: ${memberList}">
-      <td th:text="${member.id}"></td>
-      <td th:text="${member.memberEmail}"></td>
-      <td th:text="${member.memberName}"></td>
-      <td th:text="${member.memberBirth}"></td>
-      <td th:text="${member.memberMobile}"></td>
-      <td>
-        <button onclick="member_detail()">조회</button>
-      </td>
-      <td>
-        <button onclick="member_delete()">삭제</button>
-      </td>
-    </tr>
-  </table>
+    <table>
+        <tr>
+            <th>id</th>
+            <th>email</th>
+            <th>name</th>
+            <th>birth</th>
+            <th>mobile</th>
+            <th>조회</th>
+            <th>삭제</th>
+        </tr>
+        <tr th:each="member: ${memberList}">
+            <td th:text="${member.id}"></td>
+            <td th:text="${member.memberEmail}"></td>
+            <td th:text="${member.memberName}"></td>
+            <td th:text="${member.memberBirth}"></td>
+            <td th:text="${member.memberMobile}"></td>
+            <td>
+                <!--  빨간색 뜨는건 신경 안써도된다!    -->
+                <button th:onclick="member_detail([[${member.id}]])">조회</button>
+            </td>
+            <td>
+                <button th:onclick="member_delete([[${member.id}]])">삭제</button>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="detail-area">
+    <!-- 상세조회한 내용을 axios로 여기다가 뿌려줄거다 -->
 </div>
 <div th:replace="component/footer :: footer"></div>
 
 </body>
+<script>
+    const member_detail = (id) => {
+
+        // location.href="/member/"+id;
+
+        const detailArea = document.querySelector("#detail-area");
+        axios({
+            method: "get",
+            url: "/member/axios/" + id
+        }).then(res => {
+            console.log("res", res);
+            // 회원 데이터 전체 값을 보려면
+            console.log("member", res.data);
+            //회원 이메일을 보려면
+            console.log("member", res.data.memberEmail);
+            let result = "<table class=\"table table-striped\">\n" +
+                            "    <tr>\n" +
+                            "      <th>id</th>\n" +
+                            "      <td>" + res.data.id + "</td>\n" +
+                            "    </tr>\n" +
+                            "    <tr>\n" +
+                            "      <th>email</th>\n" +
+                            "      <td>" + res.data.memberEmail + "</td>\n" +
+                            "    </tr>\n" +
+                            "    <tr>\n" +
+                            "      <th>name</th>\n" +
+                            "      <td>" + res.data.memberName + "</td>\n" +
+                            "    </tr>\n" +
+                            "  </table>";
+            detailArea.innerHTML = result;
+        }).catch(err => {
+            alert("해당 회원이 없습니다!");
+        });
+
+    }
+
+    const member_delete = (id) => {
+
+    }
+</script>
 </html>

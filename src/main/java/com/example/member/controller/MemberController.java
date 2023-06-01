@@ -3,12 +3,11 @@ package com.example.member.controller;
 import com.example.member.dto.MemberDTO;
 import com.example.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -53,4 +52,33 @@ public class MemberController {
             return "memberPages/memberLogin";
         }
     }
+
+    // throws Exception은 예외가 생기는 경우(이메일,비번 틀렸을때) 곧바로 예외를 axios의 catch로 던질거다.
+    @PostMapping("/login/axios")
+    public ResponseEntity memberLoginAxios(@RequestBody MemberDTO memberDTO, HttpSession session) throws Exception {
+        memberService.loginAxios(memberDTO);
+        session.setAttribute("loginEmail", memberDTO.getMemberEmail());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @GetMapping("/axios/{id}")
+    public ResponseEntity detailAxios(@PathVariable Long id) throws Exception {
+        MemberDTO memberDTO = memberService.findById(id);
+        return new ResponseEntity<>(memberDTO, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/update")
+    public String updateForm(HttpSession session,Model model){
+        String loginEmail = (String) session.getAttribute("loginEmail");
+        MemberDTO memberDTO = memberService.findByEmail(loginEmail);
+        model.addAttribute("memberDTO",memberDTO);
+        return "/memberPages/memberUpdate";
+    }
+
+    @PostMapping("/update")
+    public String update(@ModelAttribute MemberDTO memberDTO ){
+        memberService.update(memberDTO);
+        return "redirect:/member/";
+    }
+
 }
