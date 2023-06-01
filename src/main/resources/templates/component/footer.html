@@ -6,7 +6,13 @@
 </head>
 <body>
 <div th:fragment="footer" id="footer">
-  <h1>footer 영역입니다.</h1>
+    <script>
+        const date = new Date();
+        console.log(date);
+        console.log(date.getFullYear());
+        const footer = document.getElementById("footer");
+        footer.innerHTML = "<p>&copy; " + date.getFullYear() + "&nbsp; HRDKOREA  All rights reserved. </p>";
+    </script>
 </div>
 </body>
 </html>

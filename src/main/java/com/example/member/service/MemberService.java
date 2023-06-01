@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 
@@ -27,5 +28,15 @@ public class MemberService {
             memberDTOList.add(MemberDTO.toDTO(memberEntity));
         }
         return memberDTOList;
+    }
+
+    public boolean login(MemberDTO memberDTO) {
+        Optional<MemberEntity> memberEntity =
+                memberRepository.findByMemberEmailAndMemberPassword(memberDTO.getMemberEmail(), memberDTO.getMemberPassword());
+        if (memberEntity.isPresent()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

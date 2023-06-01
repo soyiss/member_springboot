@@ -6,10 +6,37 @@
 </head>
 <body>
 <div th:fragment="nav" id="nav">
-  <h1>nav영역입니다</h1>
-    
-<!-- session값 꺼낼땐 요런식으로 꺼내면된다.   -->
-    <p th:text="${session.loginiEmail}"></p>
+    <ul>
+        <li>
+            <a href="/">
+                <i class="bi bi-house"></i>
+            </a>
+        </li>
+        <li>
+            <a href="/member/save">회원가입</a>
+        </li>
+        <li>
+            <a href="/member/login">로그인</a>
+        </li>
+        <li>
+            <a href="/member/">회원목록</a>
+        </li>
+        <li class="login-name" id="login-area">
+        </li>
+    </ul>
+<!-- nav를 사용할때 fragment안에있는 부분만 가져가서 사용하니까 스크립트도 위쪽에 써준다   -->
+    <script th:inline="javascript">
+        const loginArea = document.getElementById("login-area");
+        const loginEmail = [[${session.loginEmail}]];
+        console.log(loginEmail.length);
+
+        if (loginEmail.length != 0) {
+            loginArea.innerHTML = "<a href='/mypage' style='color: black;'>" + loginEmail + "님 환영해요!</a>" +
+                "<a href='/logout'>logout</a>";
+        } else {
+            loginArea.innerHTML = "<a href='/login'>login</a>";
+        }
+    </script>
 </div>
 </body>
 </html>

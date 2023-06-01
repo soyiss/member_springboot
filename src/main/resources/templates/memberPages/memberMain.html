@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:replace="component/config :: config"></th:block>
+</head>
+<body>
+<div th:replace="component/header :: header"></div>
+<div th:replace="component/nav :: nav"></div>
+<div id="section">
+<!-- 세션값을 꺼내는 방법 -->
+  <p th:text="${session.loginEmail}"></p>
+  <button onclick="update()">회원정보수정</button>
+</div>
+<div th:replace="component/footer :: footer"></div>
+</body>
+<script>
+
+</script>
+</html>

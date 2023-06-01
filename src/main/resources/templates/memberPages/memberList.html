@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:replace="component/config :: config"></th:block>
+</head>
+<body>
+<div th:replace="component/header :: header"></div>
+<div th:replace="component/nav :: nav"></div>
+<div id="section">
+  <table>
+    <tr>
+      <th>id</th>
+      <th>email</th>
+      <th>name</th>
+      <th>birth</th>
+      <th>mobile</th>
+      <th>조회</th>
+      <th>삭제</th>
+    </tr>
+    <tr th:each="member: ${memberList}">
+      <td th:text="${member.id}"></td>
+      <td th:text="${member.memberEmail}"></td>
+      <td th:text="${member.memberName}"></td>
+      <td th:text="${member.memberBirth}"></td>
+      <td th:text="${member.memberMobile}"></td>
+      <td>
+        <button onclick="member_detail()">조회</button>
+      </td>
+      <td>
+        <button onclick="member_delete()">삭제</button>
+      </td>
+    </tr>
+  </table>
+</div>
+<div th:replace="component/footer :: footer"></div>
+
+</body>
+</html>
