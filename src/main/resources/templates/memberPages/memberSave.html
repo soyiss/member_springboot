@@ -9,7 +9,14 @@
 <div th:replace="component/nav :: nav"></div>
 <form action="/member/save" method="post">
     <input type="text" name="memberEmail" placeholder="이메일" id="member-email" onblur="email_check()"> <br>
-    <p id="check-result"></p>
+    <p id="check-result">
+        <span id="good" style="color:green; display: none">
+            사용가능한 이메일 입니다.
+        </span>
+        <span id="no" style="color:red; display: none">
+            이미 사용중인 이메일 입니다.
+        </span>
+    </p>
     <input type="text" name="memberPassword" placeholder="비밀번호"> <br>
     <input type="text" name="memberName" placeholder="이름"> <br>
     <input type="date" name="memberBirth"> <br>
@@ -19,4 +26,31 @@
 <div th:replace="component/footer :: footer"></div>
 
 </body>
+<script>
+    const email_check = () => {
+
+        // 함수가 호출될때 display =none을 줘서 각각을 경우에 따라서 block를주게함
+        // 이거 안하면 중복되는거 나오면 빨간글 떴다가 고치면 연두색도 둘다 뜬다
+        // 상황에 맞는 메세지만 출력하게 함
+        document.querySelector("#good").style.display = "none"
+        document.querySelector("#no").style.display = "none"
+      const email = document.querySelector("#member-email").value;
+
+        axios({
+            method: "post",
+            url: "/member/dup-check",
+            data:{
+                memberEmail: email,
+            }
+        }).then(res => {
+            // 중복되지않는 경우
+            console.log("then");
+            document.querySelector("#good").style.display = "block"
+        }).catch(err => {
+            //중복된 경우(DB에서)
+            console.log("catck");
+            document.querySelector("#no").style.display = "block"
+        });
+    }
+</script>
 </html>

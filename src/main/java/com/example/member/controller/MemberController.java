@@ -108,5 +108,17 @@ public class MemberController {
         return "memberPages/memberMain";
     }
 
+    @PostMapping("/dup-check")
+    public ResponseEntity emailCheck(@RequestBody MemberDTO memberDTO ){
+//        memberService.findByEmail(memberDTO.getMemberEmail());
+        boolean result = memberService.emailCheck(memberDTO.getMemberEmail());
+        if(result){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else{
+            return  new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+
+    }
+
 
 }

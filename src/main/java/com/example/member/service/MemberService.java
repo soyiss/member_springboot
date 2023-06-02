@@ -54,6 +54,8 @@ public class MemberService {
         //위에 식보다 간단하게
         // 조회를 하면서 없으면 예외처리, 있으면 memberEntity리턴해줌
         MemberEntity memberEntity = memberRepository.findByMemberEmail(loginEmail).orElseThrow(() -> new NoSuchElementException());
+
+        //회원가입 할때 이메일을 적을때 기존 DB에 이메일이 없는걸 입력하면 예외가 터짐 (catch부분이 돌아감)
         // memberEntity에 객체 값이 있는경우 DTO로 변환해서 컨트롤러로 리턴한다.
         return MemberDTO.toDTO(memberEntity);
 
@@ -90,5 +92,17 @@ public class MemberService {
 
     public void delete(Long id) {
         memberRepository.deleteById(id);
+    }
+
+    public boolean emailCheck(String memberEmail) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberEmail(memberEmail);
+        if(optionalMemberEntity.isEmpty()){
+            //일치하는 이메일이 없으면 사용해도된다
+            return true;
+        }else{
+            //일치하는 이메일이 있으면 중복됬단 얘기니깐 리텅을 풜스로주자
+            return false;
+        }
+
     }
 }
