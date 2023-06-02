@@ -10,6 +10,9 @@
     <form action="/member/login" method="post">
         <input type="text" name="memberEmail" placeholder="이메일"> <br>
         <input type="text" name="memberPassword" placeholder="비밀번호"> <br>
+        <p id="login-result" style="color: red; display: none" >
+            이메일 또는 비밀번호가 틀립니다!
+        </p>
         <input type="button" value="로그인" onclick="login()">
     </form>
 </div>
@@ -34,10 +37,14 @@
             }
             //성공했을때 then
         }).then(res => {
+
             console.log("res", res);
+            location.href="/member/mypage";
             // 실패했을때 catch
         }).catch(err => {
             console.log("err", err);
+            //틀리면 화면에 출력되게 만듬
+            document.getElementById("login-result").style.display="block";
         });
 
     }

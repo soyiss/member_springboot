@@ -36,6 +36,7 @@ public class MemberEntity {
         return memberEntity;
     }
 
+    // 위에 메소드랑 비슷해서 코드 중복이 있다고 노랑색 경고등이 뜨는데 무시하면 된다
     public static MemberEntity toupdateEntity(MemberDTO memberDTO) {
         MemberEntity memberEntity = new MemberEntity();
         memberEntity.setId(memberDTO.getId());

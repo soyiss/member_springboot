@@ -42,15 +42,21 @@ public class MemberService {
     }
 
     public MemberDTO findByEmail(String loginEmail) {
-        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberEmail(loginEmail);
-        if (optionalMemberEntity.isPresent()) {
-            MemberEntity memberEntity = optionalMemberEntity.get();
-            MemberDTO memberDTO = MemberDTO.toDTO(memberEntity);
-            return memberDTO;
+//        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberEmail(loginEmail);
+//        if (optionalMemberEntity.isPresent()) {
+//            MemberEntity memberEntity = optionalMemberEntity.get();
+//            MemberDTO memberDTO = MemberDTO.toDTO(memberEntity);
+//            return memberDTO;
+//
+//        } else {
+//            return null;
+//        }
+        //위에 식보다 간단하게
+        // 조회를 하면서 없으면 예외처리, 있으면 memberEntity리턴해줌
+        MemberEntity memberEntity = memberRepository.findByMemberEmail(loginEmail).orElseThrow(() -> new NoSuchElementException());
+        // memberEntity에 객체 값이 있는경우 DTO로 변환해서 컨트롤러로 리턴한다.
+        return MemberDTO.toDTO(memberEntity);
 
-        } else {
-            return null;
-        }
     }
 
     public void update(MemberDTO memberDTO) {

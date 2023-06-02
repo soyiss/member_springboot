@@ -66,19 +66,28 @@ public class MemberController {
         return new ResponseEntity<>(memberDTO, HttpStatus.OK);
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        // 세션에 담긴 값 전체 삭제
+        session.invalidate();
+        return "redirect:/";
+    }
 
     @GetMapping("/update")
     public String updateForm(HttpSession session,Model model){
         String loginEmail = (String) session.getAttribute("loginEmail");
+
         MemberDTO memberDTO = memberService.findByEmail(loginEmail);
         model.addAttribute("memberDTO",memberDTO);
+        //위에 두줄대신 이렇게 써도된다
+//        model.addAttribute("memberDTO",memberService.findByEmail(loginEmail));
         return "/memberPages/memberUpdate";
     }
 
-    @PostMapping("/update")
-    public String update(@ModelAttribute MemberDTO memberDTO ){
+    @PutMapping("/{id}")
+    public ResponseEntity update(@RequestBody MemberDTO memberDTO ){
         memberService.update(memberDTO);
-        return "redirect:/member/";
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // 주소 요청이 delete인 경우 어노테이션을 DeleteMapping을 사용한다
@@ -87,5 +96,17 @@ public class MemberController {
         memberService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/{id}")
+    public String detail(@PathVariable Long id,Model model){
+        MemberDTO memberDTO = memberService.findById(id);
+        model.addAttribute("member", memberDTO);
+        return "memberPages/memberDetail";
+    }
+    @GetMapping("/mypage")
+    public String myPage() {
+        return "memberPages/memberMain";
+    }
+
 
 }

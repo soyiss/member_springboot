@@ -8,16 +8,53 @@
 <div th:replace="component/nav :: nav"></div>
 <div id="section">
   <form action="/member/update" method="post">
-    id<br><input type="text" name="id" th:value="${memberDTO.getId}" readonly>
-    email<br><input type="text" name="memberEmail" th:value="${memberDTO.getMemberEmail()}" readonly>
-    pw<br><input type="text" name="memberPassword" th:value="${memberDTO.getMemberPassword()}">
-    name<br><input type="text" name="memberName" th:value="${memberDTO.getMemberName()}">
-    birth<br><input type="date" name="memberBirth" th:value="${memberDTO.getMemberBirth()}">
-    mobile<br><input type="text" name="memberMobile" th:value="${memberDTO.getMemberMobile()}">
-    <input type="submit" value="수정" >
+    <input type="hidden" name="id" th:value="${memberDTO.id}"> <br>
+    <input type="text" name="memberEmail" th:value="${memberDTO.memberEmail}" placeholder="이메일" readonly> <br>
+    <p id="check-result"></p>
+    <input type="text" name="memberPassword" placeholder="비밀번호"> <br>
+    <input type="text" name="memberName" th:value="${memberDTO.memberName}" placeholder="이름"> <br>
+    <input type="date" name="memberBirth" th:value="${memberDTO.memberBirth}"> <br>
+    <input type="text" name="memberMobile" th:value="${memberDTO.memberMobile}" placeholder="전화번호"> <br>
+    <input type="button" value="수정" onclick="member_update()">
 <!--     수정 버튼을 누르면 axios로 처리하게 만들자 수정이 끝나면 상세페이지를 요청하게 해보자!!-->
   </form>
 </div>
 <div th:replace="component/footer :: footer"></div>
 </body>
+<script th:inline="javascript">
+  const member_update = () => {
+    // 수정 처리할때 덮어쓰기 형태로 돌아가기 때문에 수정을 하든 안하든 필드 값을 다 적어야됨다
+    const passDB =[[${memberDTO.memberPassword}]];
+    const password = document.querySelector('input[name="memberPassword"]').value;
+    const id = document.querySelector('input[name="id"]').value;
+    const email = document.querySelector('input[name="memberEmail"]').value;
+    const name = document.querySelector('input[name="memberName"]').value;
+    const birth = document.querySelector('input[name="memberBirth"]').value;
+    const mobile = document.querySelector('input[name="memberMobile"]').value;
+
+    if(passDB == password){
+      // 일치하는 경우 axios로 보낸다
+      axios({
+        method: "put",
+        url: "/member/" + id,
+        data:{
+            id: id,
+            memberEmail: email,
+          memberPassword: password,
+          memberName: name,
+          memberBirth: birth,
+          memberMobile:mobile
+        }
+      }).then(res => {
+        location.href="/member/"+id;
+      }).catch(err => {
+        alert("회원정보 수정 실패!");
+      });
+
+
+    }else{
+      alert("비밀번호가 일치하지 않습니다!")
+    }
+  }
+</script>
 </html>

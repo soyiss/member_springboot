@@ -62,6 +62,7 @@ public class memberTest {
     @DisplayName("로그인 테스트")
     public void loginTest() {
         MemberDTO memberDTO = newMember(999);
+        memberService.save(memberDTO);
         MemberDTO loginDTO = new MemberDTO();
         loginDTO.setMemberEmail("wrong email");
         loginDTO.setMemberPassword("1234");
