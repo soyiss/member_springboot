@@ -43,12 +43,16 @@ public class MemberController {
     public String loginForm(@RequestParam(value="redirectURI", defaultValue = "/member/mypage")String redirectURI,Model model) {
         //defaultValue = "/member/mypage"는 memberMain으로 가기위한 주소
         // @RequestParam(value="redirectURI", defaultValue = "/member/mypage"의 목적은 사용자가 직전에 사용한 주소값을 받아주기 위한것이다
+        System.out.println("MemberController.loginForm");
+        System.out.println("redirectURI = " + redirectURI);
         model.addAttribute("redirectURI",redirectURI);
         return "memberPages/memberLogin";
     }
 
     @PostMapping("/login")
     public String memberLogin(@ModelAttribute MemberDTO memberDTO, HttpSession session,@RequestParam("redirectURI") String redirectURI) {
+        System.out.println("MemberController.memberLogin");
+        System.out.println("URI" + redirectURI);
         boolean loginResult = memberService.login(memberDTO);
         if (loginResult) {
             session.setAttribute("loginEmail", memberDTO.getMemberEmail());
@@ -59,7 +63,7 @@ public class MemberController {
             // redirect:/member/mypage로 요청되며, memberMain 화면으로 전환됨.
             return "redirect:"+redirectURI;
         } else {
-            return "memberPages/memberLogin";
+            return "memberPages/memberDetail";
         }
     }
 
