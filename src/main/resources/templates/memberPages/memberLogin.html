@@ -8,12 +8,14 @@
 <div th:replace="component/nav :: nav"></div>
 <div id="section">
     <form action="/member/login" method="post">
+        <input type="hidden" name="redirectURI" th:value="${redirectURI}">
         <input type="text" name="memberEmail" placeholder="이메일"> <br>
         <input type="text" name="memberPassword" placeholder="비밀번호"> <br>
         <p id="login-result" style="color: red; display: none" >
             이메일 또는 비밀번호가 틀립니다!
         </p>
-        <input type="button" value="로그인" onclick="login()">
+<!--        <input type="submit" value="로그인" onclick="login()">-->
+        <input type="submit" value="로그인">
     </form>
 </div>
 <div th:replace="component/footer :: footer"></div>

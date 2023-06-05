@@ -40,16 +40,24 @@ public class MemberController {
 
 
     @GetMapping("/login")
-    public String loginForm() {
+    public String loginForm(@RequestParam(value="redirectURI", defaultValue = "/member/mypage")String redirectURI,Model model) {
+        //defaultValue = "/member/mypage"는 memberMain으로 가기위한 주소
+        // @RequestParam(value="redirectURI", defaultValue = "/member/mypage"의 목적은 사용자가 직전에 사용한 주소값을 받아주기 위한것이다
+        model.addAttribute("redirectURI",redirectURI);
         return "memberPages/memberLogin";
     }
 
     @PostMapping("/login")
-    public String memberLogin(@ModelAttribute MemberDTO memberDTO, HttpSession session) {
+    public String memberLogin(@ModelAttribute MemberDTO memberDTO, HttpSession session,@RequestParam("redirectURI") String redirectURI) {
         boolean loginResult = memberService.login(memberDTO);
         if (loginResult) {
             session.setAttribute("loginEmail", memberDTO.getMemberEmail());
-            return "memberPages/memberMain";
+//            return "memberPages/memberMain";
+
+            //로그인 성공하면 사용자가 직전에 요청한 주소로 redirect
+            //인터셉터 걸리지 않고 처음부터 로그인하는 사용자였다면
+            // redirect:/member/mypage로 요청되며, memberMain 화면으로 전환됨.
+            return "redirect:"+redirectURI;
         } else {
             return "memberPages/memberLogin";
         }
@@ -133,12 +141,12 @@ public class MemberController {
         5. 따라서 클라이언트는 /pass-rule 엔드포인트로 POST 요청을 보내고, 요청 본문에 회원 비밀번호를 포함시키면 서버는 해당 비밀번호가 정규식 규칙을 만족하는지를 확인하고,
            그 결과를 boolean 값으로 반환합니다. 이를 통해 클라이언트는 회원 비밀번호의 유효성을 검증할 수 있습니다.
     */
-    @PostMapping("/pass-rule")
-    public boolean passRule(@RequestBody MemberDTO memberDTO) {
-        String exp = "^(?=.*[a-z])(?=.*\\d)(?=.*[-_!#])[A-Za-z\\d-_!#]{5,10}$";
-        Pattern pattern = Pattern.compile(exp);
-        Matcher matcher = pattern.matcher(memberDTO.getMemberPassword());
-        boolean isValid = matcher.matches();
-        return isValid;
-    }
+//    @PostMapping("/pass-rule")
+//    public boolean passRule(@RequestBody MemberDTO memberDTO) {
+//        String exp = "^(?=.*[a-z])(?=.*\\d)(?=.*[-_!#])[A-Za-z\\d-_!#]{5,10}$";
+//        Pattern pattern = Pattern.compile(exp);
+//        Matcher matcher = pattern.matcher(memberDTO.getMemberPassword());
+//        boolean isValid = matcher.matches();
+//        return isValid;
+//    }
 }

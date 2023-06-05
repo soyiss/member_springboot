@@ -12,7 +12,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
-
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
